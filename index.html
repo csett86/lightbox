@@ -41,11 +41,6 @@
         body:hover #fullscreen-hint {
             opacity: 1;
         }
-        
-        /* Hide hint when in fullscreen */
-        body.fullscreen #fullscreen-hint {
-            opacity: 0;
-        }
     </style>
 </head>
 <body>
@@ -54,7 +49,6 @@
     <script>
         // Get the body element
         const body = document.body;
-        const hint = document.getElementById('fullscreen-hint');
         
         // Function to toggle fullscreen
         function toggleFullscreen() {
@@ -88,24 +82,6 @@
         
         // Add click event listener
         body.addEventListener('click', toggleFullscreen);
-        
-        // Listen for fullscreen changes to update body class
-        function updateFullscreenState() {
-            if (document.fullscreenElement || 
-                document.webkitFullscreenElement || 
-                document.mozFullScreenElement || 
-                document.msFullscreenElement) {
-                body.classList.add('fullscreen');
-            } else {
-                body.classList.remove('fullscreen');
-            }
-        }
-        
-        // Add event listeners for fullscreen state changes
-        document.addEventListener('fullscreenchange', updateFullscreenState);
-        document.addEventListener('webkitfullscreenchange', updateFullscreenState);
-        document.addEventListener('mozfullscreenchange', updateFullscreenState);
-        document.addEventListener('msfullscreenchange', updateFullscreenState);
     </script>
 </body>
 </html>
