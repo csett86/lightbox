@@ -66,9 +66,9 @@
 
                 try {
                     wakeLock = await navigator.wakeLock.request("screen");
-                    console.log("WakeLock aquired, screen will stay on");
+                    console.log("WakeLock acquired, screen will stay on");
                 } catch (error) {
-                    console.error(`WakeLock could not be aquired due to ${error.name}, ${error.message}`);
+                    console.error(`WakeLock could not be acquired due to ${error.name}, ${error.message}`);
                 }
             } else {
                 // Exit fullscreen
@@ -76,9 +76,13 @@
                 
                 // Release wakelock when exiting fullscreen
                 if (wakeLock !== null) {
-                    await wakeLock.release();
-                    wakeLock = null;
-                    console.log("WakeLock released");
+                    try {
+                        await wakeLock.release();
+                        wakeLock = null;
+                        console.log("WakeLock released");
+                    } catch (error) {
+                        console.error(`WakeLock could not be released due to ${error.name}, ${error.message}`);
+                    }
                 }
             }
         }
