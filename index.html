@@ -55,20 +55,31 @@
         // Get the body element
         const body = document.body;
         
+        // Store wakelock reference so it can be released later
+        let wakeLock = null;
+        
         // Function to toggle fullscreen
-        function toggleFullscreen() {
+        async function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 // Enter fullscreen
                 body.requestFullscreen();
 
-                navigator.wakeLock.request("screen").then(wakeLock => {
+                try {
+                    wakeLock = await navigator.wakeLock.request("screen");
                     console.log("WakeLock aquired, screen will stay on");
-                }).catch(error => {
-                    console.error(`WakeLock could not be aquired due to ${err.name}, ${err.message}`);
-                });
+                } catch (error) {
+                    console.error(`WakeLock could not be aquired due to ${error.name}, ${error.message}`);
+                }
             } else {
                 // Exit fullscreen
                 document.exitFullscreen();
+                
+                // Release wakelock when exiting fullscreen
+                if (wakeLock !== null) {
+                    await wakeLock.release();
+                    wakeLock = null;
+                    console.log("WakeLock released");
+                }
             }
         }
         
