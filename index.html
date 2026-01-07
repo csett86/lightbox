@@ -61,12 +61,11 @@
                 // Enter fullscreen
                 body.requestFullscreen();
 
-                try {
-                    const wakeLock = await navigator.wakeLock.request("screen");
+                navigator.wakeLock.request("screen").then(wakeLock => {
                     console.log("WakeLock aquired, screen will stay on");
-                } catch (err) {
-                    console.log(`WakeLock could not be aquired due to ${err.name}, ${err.message}`);
-                }
+                }).catch(error => {
+                    console.error(`WakeLock could not be aquired due to ${err.name}, ${err.message}`);
+                });
             } else {
                 // Exit fullscreen
                 document.exitFullscreen();
